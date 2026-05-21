@@ -1,0 +1,23 @@
+# Windows
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Node (por si en el futuro se usa)
+node_modules/
+npm-debug.log*
+
+# Temporales
+*.tmp
+*.bak
+*.swp
+*~
