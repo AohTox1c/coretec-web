@@ -1098,14 +1098,24 @@ p  { color: var(--color-text-muted); font-size: 0.975rem; }
 }
 .service-detail-grid.reverse { direction: rtl; }
 .service-detail-grid.reverse > * { direction: ltr; }
+.service-detail-grid > * {
+  min-width: 0;
+}
 .service-detail-image {
   width: 100%;
-  height: 320px;
+  height: 400px;
   object-fit: cover;
+  object-position: center;
   border-radius: var(--radius-md);
   background: var(--color-surface);
   display: block;
 }
+.service-detail-image--reparacion { object-position: 8% center; }
+.service-detail-image--inspeccion { object-position: 62% center; }
+.service-detail-image--mantenimiento,
+.service-detail-image--polipastos { object-position: 55% center; }
+.service-detail-image--rope-access { object-position: 38% center; }
+.service-detail-image--soporte { object-position: 38% center; }
 .service-detail-image-placeholder {
   width: 100%;
   height: 320px;
@@ -1504,8 +1514,17 @@ p  { color: var(--color-text-muted); font-size: 0.975rem; }
   .gallery-grid { grid-template-rows: 300px repeat(2, 240px); }
   .gallery-item.featured { grid-column: 1 / -1; grid-row: auto; }
   .mv-grid { grid-template-columns: 1fr; }
-  .service-detail-grid { grid-template-columns: 1fr; padding: 32px; }
+  .service-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 20px;
+  }
   .service-detail-grid.reverse { direction: ltr; }
+  .service-detail-image {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+  .service-detail-image--reparacion { object-position: 4% center; }
   .gallery-full-grid { grid-template-columns: 1fr 1fr; }
   .cta-inner { flex-direction: column; }
   .nav-links, .nav-cta { display: none; }
@@ -1536,6 +1555,11 @@ p  { color: var(--color-text-muted); font-size: 0.975rem; }
   .slide-desc { width: calc(100vw - 60px); max-width: none; overflow-wrap: anywhere; }
   .section-padding { padding: 64px 0; }
   .about-inner { gap: 32px; }
+  .service-detail-grid {
+    gap: 28px;
+    padding: 16px;
+    margin-bottom: 40px;
+  }
   .features-grid { grid-template-columns: 1fr; }
   .feature-item { border-right: none; border-bottom: 1px solid var(--color-border); }
   .feature-item:last-child { border-bottom: none; }
