@@ -92,21 +92,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxClose = document.querySelector('.lightbox-close');
 
   if (lightbox) {
+    function openLightbox(item) {
+      const src = item?.dataset.src;
+      if (!src) return;
+
+      const itemImg = item.querySelector('img');
+      lightboxImg.src = src;
+      lightboxImg.alt = itemImg?.alt || item.title || 'Imagen ampliada';
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
     document.querySelectorAll('.gallery-item[data-src]').forEach(item => {
-      item.addEventListener('click', () => {
-        const src = item.dataset.src;
-        if (src) {
-          lightboxImg.src = src;
-          lightbox.classList.add('active');
-          document.body.style.overflow = 'hidden';
-        }
-      });
+      item.addEventListener('click', () => openLightbox(item));
     });
 
     function closeLightbox() {
       lightbox.classList.remove('active');
       document.body.style.overflow = '';
       lightboxImg.src = '';
+      lightboxImg.alt = 'Imagen ampliada';
     }
 
     lightboxClose?.addEventListener('click', closeLightbox);
@@ -116,6 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeLightbox();
     });
+
+    const selectedId = decodeURIComponent(window.location.hash.slice(1));
+    const selectedItem = selectedId ? document.getElementById(selectedId) : null;
+    if (selectedItem?.matches('.gallery-item[data-src]')) {
+      selectedItem.scrollIntoView({ block: 'center' });
+      window.setTimeout(() => openLightbox(selectedItem), 250);
+    }
   }
 
   /* ── Gallery / Product Filters ── */
