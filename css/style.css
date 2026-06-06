@@ -231,13 +231,13 @@ p  { color: var(--color-text-muted); font-size: 0.975rem; }
   gap: 10px;
 }
 .nav-logo-img {
-  height: 90px;
+  height: 80px;
   width: auto;
   display: block;
   object-fit: contain;
 }
 .footer-logo .nav-logo-img {
-  height: 120px;
+  height: 100px;
 }
 .nav-logo-icon {
   width: 42px;
@@ -1546,8 +1546,8 @@ p  { color: var(--color-text-muted); font-size: 0.975rem; }
 }
 
 @media (max-width: 600px) {
-  :root { --nav-height: 76px; }
-  .nav-logo-img { height: 68px; }
+  :root { --nav-height: 64px; }
+  .nav-logo-img { height: 58px; }
   .nav-divider { display: none; }
   .nav-inner { gap: 12px; }
   .hamburger { right: 18px; }
