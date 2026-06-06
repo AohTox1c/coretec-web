@@ -615,6 +615,22 @@ p  { color: var(--color-text-muted); font-size: 0.975rem; }
   letter-spacing: 0.12em;
   min-width: 48px;
 }
+.slider-toggle {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  color: var(--color-white);
+  background: rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+.slider-toggle:hover,
+.slider-toggle:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
 
 /* ── Progress bar ── */
 .slider-progress {
@@ -1543,6 +1559,7 @@ p  { color: var(--color-text-muted); font-size: 0.975rem; }
     font-size: 1.7rem;
     line-height: 1;
   }
+  .hamburger.open::before { content: '\00d7'; }
 }
 
 @media (max-width: 600px) {
@@ -1616,9 +1633,28 @@ p  { color: var(--color-text-muted); font-size: 0.975rem; }
 .delay-3 { animation-delay: 0.3s; }
 .delay-4 { animation-delay: 0.4s; }
 
-/* Intersection Observer targets */
-[data-animate] { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-[data-animate].visible { opacity: 1; transform: translateY(0); }
+/* Intersection Observer targets: visible by default if JavaScript is unavailable. */
+[data-animate] { opacity: 1; transform: none; }
+@media (scripting: enabled) {
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  [data-animate].visible { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-animate] { opacity: 1; transform: none; }
+}
 
 /* ============================================================
    CONTACT PAGE
@@ -1848,3 +1884,45 @@ select.form-input option {
   .form-footer { flex-direction: column; align-items: stretch; }
   .form-submit { width: 100%; }
 }
+
+/* ============================================================
+   THANK YOU PAGE
+   ============================================================ */
+.thanks-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(57,231,95,0.12), transparent 38%),
+    var(--color-bg);
+}
+.thanks-card {
+  width: min(620px, 100%);
+  padding: 48px 36px;
+  text-align: center;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+.thanks-logo {
+  width: 132px;
+  height: auto;
+  margin: 0 auto 24px;
+}
+.thanks-icon {
+  width: 64px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  color: #050505;
+  background: var(--color-accent);
+  font-size: 2rem;
+}
+.thanks-card h1 { margin-bottom: 12px; }
+.thanks-card p { max-width: 500px; margin: 0 auto 28px; }
+.thanks-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }

@@ -4,21 +4,40 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  const formNext = document.querySelector('input[name="_next"]');
+  if (formNext) {
+    formNext.value = `${window.location.origin}/gracias.html`;
+  }
+
   /* ── Hamburger / Mobile Menu ── */
   const hamburger = document.querySelector('.hamburger');
   const mobileMenu = document.querySelector('.mobile-menu');
 
   if (hamburger && mobileMenu) {
+    const setMenuOpen = (open) => {
+      hamburger.classList.toggle('open', open);
+      mobileMenu.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
+      hamburger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    };
+
     hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      mobileMenu.classList.toggle('open');
+      setMenuOpen(!mobileMenu.classList.contains('open'));
     });
-    // Close on link click
+
     mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        hamburger.classList.remove('open');
-        mobileMenu.classList.remove('open');
-      });
+      link.addEventListener('click', () => setMenuOpen(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && mobileMenu.classList.contains('open')) {
+        setMenuOpen(false);
+        hamburger.focus();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) setMenuOpen(false);
     });
   }
 
@@ -90,28 +109,41 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxClose = document.querySelector('.lightbox-close');
+  let lastLightboxTrigger = null;
 
   if (lightbox) {
     function openLightbox(item) {
       const src = item?.dataset.src;
       if (!src) return;
 
+      lastLightboxTrigger = item;
       const itemImg = item.querySelector('img');
       lightboxImg.src = src;
       lightboxImg.alt = itemImg?.alt || item.title || 'Imagen ampliada';
       lightbox.classList.add('active');
+      lightbox.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      lightboxClose?.focus();
     }
 
     document.querySelectorAll('.gallery-item[data-src]').forEach(item => {
       item.addEventListener('click', () => openLightbox(item));
+      item.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openLightbox(item);
+        }
+      });
     });
 
     function closeLightbox() {
+      if (!lightbox.classList.contains('active')) return;
       lightbox.classList.remove('active');
+      lightbox.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
       lightboxImg.src = '';
       lightboxImg.alt = 'Imagen ampliada';
+      lastLightboxTrigger?.focus();
     }
 
     lightboxClose?.addEventListener('click', closeLightbox);
@@ -135,9 +167,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (filterBtns.length) {
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        // Update active button
-        filterBtns.forEach(b => b.classList.remove('active'));
+        filterBtns.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
+        });
         btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
 
         const filter = btn.dataset.filter;
         const items = document.querySelectorAll('[data-category]');

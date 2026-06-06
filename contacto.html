@@ -4,15 +4,25 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="img/CORETEC FAVICON.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#050505" />
   <title>Contacto | CORE-TEC</title>
   <meta name="description" content="Contacta a CORE-TEC para solicitar información o cotizar servicios técnicos para la industria eólica y trabajos en altura." />
+  <link rel="canonical" href="https://core-tec.cl/contacto.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_CL" />
+  <meta property="og:site_name" content="CORE-TEC" />
+  <meta property="og:title" content="Contacto | CORE-TEC" />
+  <meta property="og:description" content="Solicita información o una cotización para servicios técnicos en la industria eólica." />
+  <meta property="og:url" content="https://core-tec.cl/contacto.html" />
+  <meta property="og:image" content="https://core-tec.cl/img/corporativo/trabajo-en-altura.webp" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 </head>
 <body>
   <div class="topbar"><div class="container topbar-inner"><div class="topbar-contact"><a href="mailto:contacto@core-tec.cl"><i class="bi bi-envelope"></i> contacto@core-tec.cl</a><a href="tel:+56973346812"><i class="bi bi-telephone"></i> +56 9 7334 6812</a></div><div class="topbar-social"><a href="https://wa.me/56973346812" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> WhatsApp</a></div></div></div>
-  <nav class="navbar"><div class="container nav-inner"><a href="index.html" class="nav-logo"><img src="img/CORETEC LOGO.png" alt="CORE-TEC" class="nav-logo-img" /></a><div class="nav-divider"></div><div class="nav-links"><a href="index.html">Inicio</a><a href="servicios.html">Soluciones</a><a href="galeria.html">Portafolio</a><a href="somos.html">Empresa</a><a href="certificaciones.html">Certificaciones</a></div><a href="contacto.html" class="btn btn-primary nav-cta active"><i class="bi bi-send"></i> Contáctanos</a><button class="hamburger" aria-label="Menú"><span></span><span></span><span></span></button></div></nav>
-  <div class="mobile-menu"><a href="index.html">Inicio</a><a href="servicios.html">Soluciones</a><a href="galeria.html">Portafolio</a><a href="somos.html">Empresa</a><a href="certificaciones.html">Certificaciones</a><a href="contacto.html" class="btn btn-primary">Contáctanos</a></div>
+  <nav class="navbar"><div class="container nav-inner"><a href="index.html" class="nav-logo"><img src="img/CORETEC LOGO.png" alt="CORE-TEC" class="nav-logo-img" /></a><div class="nav-divider"></div><div class="nav-links"><a href="index.html">Inicio</a><a href="servicios.html">Soluciones</a><a href="galeria.html">Portafolio</a><a href="somos.html">Empresa</a><a href="certificaciones.html">Certificaciones</a></div><a href="contacto.html" class="btn btn-primary nav-cta active"><i class="bi bi-send"></i> Contáctanos</a><button type="button" class="hamburger" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button></div></nav>
+  <div class="mobile-menu" id="mobileMenu"><a href="index.html">Inicio</a><a href="servicios.html">Soluciones</a><a href="galeria.html">Portafolio</a><a href="somos.html">Empresa</a><a href="certificaciones.html">Certificaciones</a><a href="contacto.html" class="btn btn-primary">Contáctanos</a></div>
 
   <section class="page-hero"><div class="container page-hero-content"><div class="breadcrumb"><a href="index.html">Inicio</a><span class="breadcrumb-sep">›</span><span>Contacto</span></div><span class="section-tag">Conversemos</span><h1>Hablemos de tu <span class="accent">proyecto</span></h1><p>Envíanos tus requerimientos técnicos y condiciones operacionales para evaluar una solución adecuada.</p></div></section>
 
@@ -26,12 +36,13 @@
     <div class="contact-form-panel" data-animate><div class="contact-form-card"><div class="contact-form-header"><h3>Solicitar información o cotización</h3><p>Describe brevemente el servicio, activo, ubicación y alcance requerido.</p></div>
       <form class="contact-form" id="contactForm" action="https://formsubmit.co/contacto@core-tec.cl" method="POST">
         <input type="hidden" name="_subject" value="Nueva solicitud web Core Tec" />
+        <input type="hidden" name="_next" value="/gracias.html" />
         <input type="hidden" name="_template" value="table" />
         <input type="hidden" name="_captcha" value="false" />
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
         <div class="form-row"><div class="form-group"><label class="form-label" for="nombre"><i class="bi bi-person"></i> Nombre completo <span class="required">*</span></label><input type="text" id="nombre" name="nombre" class="form-input" autocomplete="name" required /></div><div class="form-group"><label class="form-label" for="correo"><i class="bi bi-envelope"></i> Correo electrónico <span class="required">*</span></label><input type="email" id="correo" name="email" class="form-input" autocomplete="email" required /></div></div>
         <div class="form-row"><div class="form-group"><label class="form-label" for="empresa"><i class="bi bi-building"></i> Empresa</label><input type="text" id="empresa" name="empresa" class="form-input" autocomplete="organization" /></div><div class="form-group"><label class="form-label" for="telefono"><i class="bi bi-telephone"></i> Número de contacto <span class="required">*</span></label><input type="tel" id="telefono" name="telefono" class="form-input" autocomplete="tel" required /></div></div>
-        <div class="form-group"><label class="form-label" for="servicio"><i class="bi bi-gear"></i> Servicio de interés</label><select id="servicio" name="servicio" class="form-input"><option value="">Selecciona una opción</option><option>Reparación de palas eólicas</option><option>Inspección de palas o aerogeneradores</option><option>Mantenimiento eólico</option><option>Inspección y certificación de polipastos</option><option>Rope Access y trabajos en altura</option><option>Soporte técnico especializado</option><option>Materiales compuestos</option><option>Otro requerimiento</option></select></div>
+          <div class="form-group"><label class="form-label" for="servicio"><i class="bi bi-gear"></i> Servicio de interés</label><select id="servicio" name="servicio" class="form-input"><option value="">Selecciona una opción</option><option>Reparación de palas eólicas</option><option>Inspección de palas o aerogeneradores</option><option>Mantenimiento eólico</option><option>Inspección y certificación de polipastos</option><option>Rope Access y trabajos en altura</option><option>Soporte técnico especializado</option><option>Otro requerimiento</option></select></div>
         <div class="form-group"><label class="form-label" for="mensaje"><i class="bi bi-chat-text"></i> Mensaje <span class="required">*</span></label><textarea id="mensaje" name="mensaje" class="form-textarea" rows="6" placeholder="Describe el proyecto, ubicación, activo y alcance requerido." required></textarea></div>
         <div class="form-footer"><p class="form-note"><span class="required">*</span> Campos obligatorios</p><button type="submit" class="btn btn-primary form-submit"><i class="bi bi-send"></i> Enviar solicitud</button></div>
       </form>

@@ -4,8 +4,19 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="img/CORETEC FAVICON.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#050505" />
+  <link rel="preload" as="image" href="img/corporativo/trabajo-en-altura.webp" fetchpriority="high" />
   <title>CORE-TEC | Soluciones técnicas para la industria eólica</title>
   <meta name="description" content="CORE-TEC ofrece reparación e inspección de palas eólicas, mantenimiento de aerogeneradores, Rope Access y suministro de materiales compuestos." />
+  <link rel="canonical" href="https://core-tec.cl/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_CL" />
+  <meta property="og:site_name" content="CORE-TEC" />
+  <meta property="og:title" content="CORE-TEC | Soluciones técnicas para la industria eólica" />
+  <meta property="og:description" content="Servicios especializados para reparación, inspección y mantenimiento de infraestructura eólica." />
+  <meta property="og:url" content="https://core-tec.cl/" />
+  <meta property="og:image" content="https://core-tec.cl/img/corporativo/trabajo-en-altura.webp" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 </head>
@@ -34,10 +45,10 @@
         <a href="certificaciones.html">Certificaciones</a>
       </div>
       <a href="contacto.html" class="btn btn-primary nav-cta"><i class="bi bi-send"></i> Contáctanos</a>
-      <button class="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+      <button type="button" class="hamburger" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </nav>
-  <div class="mobile-menu">
+  <div class="mobile-menu" id="mobileMenu">
     <a href="index.html" class="active">Inicio</a>
     <a href="servicios.html">Soluciones</a>
     <a href="galeria.html">Portafolio</a>
@@ -89,14 +100,15 @@
         </div>
       </div>
     </div>
-    <button class="slider-arrow slider-prev" aria-label="Anterior"><i class="bi bi-chevron-left"></i></button>
-    <button class="slider-arrow slider-next" aria-label="Siguiente"><i class="bi bi-chevron-right"></i></button>
+    <button type="button" class="slider-arrow slider-prev" aria-label="Anterior"><i class="bi bi-chevron-left"></i></button>
+    <button type="button" class="slider-arrow slider-next" aria-label="Siguiente"><i class="bi bi-chevron-right"></i></button>
     <div class="slider-footer">
       <div class="slider-dots">
-        <button class="dot active" data-dot="0" aria-label="Slide 1"></button>
-        <button class="dot" data-dot="1" aria-label="Slide 2"></button>
-        <button class="dot" data-dot="2" aria-label="Slide 3"></button>
+        <button type="button" class="dot active" data-dot="0" aria-label="Slide 1" aria-current="true"></button>
+        <button type="button" class="dot" data-dot="1" aria-label="Slide 2" aria-current="false"></button>
+        <button type="button" class="dot" data-dot="2" aria-label="Slide 3" aria-current="false"></button>
       </div>
+      <button type="button" class="slider-toggle" id="sliderToggle" aria-label="Pausar carrusel" aria-pressed="false"><i class="bi bi-pause-fill"></i></button>
       <div class="slider-counter"><span id="slideNum">01</span> / 03</div>
     </div>
     <div class="slider-progress"><div class="slider-progress-bar" id="sliderProgress"></div></div>
@@ -200,23 +212,56 @@
       const dots = slider.querySelectorAll('.dot');
       const bar = document.getElementById('sliderProgress');
       const numEl = document.getElementById('slideNum');
+      const toggle = document.getElementById('sliderToggle');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       let current = 0;
       let autoTimer;
+      let userPaused = reduceMotion.matches;
       function progress() {
+        if (userPaused || document.hidden) {
+          bar.style.transition = 'none';
+          bar.style.width = '0%';
+          return;
+        }
         bar.style.transition = 'none'; bar.style.width = '0%'; void bar.offsetWidth;
         bar.style.transition = `width ${DURATION}ms linear`; bar.style.width = '100%';
       }
       function activate(index) {
-        slides[current].classList.remove('active'); dots[current].classList.remove('active');
+        slides[current].classList.remove('active');
+        slides[current].setAttribute('aria-hidden', 'true');
+        dots[current].classList.remove('active');
+        dots[current].setAttribute('aria-current', 'false');
         current = (index + slides.length) % slides.length;
-        slides[current].classList.add('active'); dots[current].classList.add('active');
+        slides[current].classList.add('active');
+        slides[current].setAttribute('aria-hidden', 'false');
+        dots[current].classList.add('active');
+        dots[current].setAttribute('aria-current', 'true');
         numEl.textContent = String(current + 1).padStart(2, '0'); progress();
       }
-      function start() { clearInterval(autoTimer); autoTimer = setInterval(() => activate(current + 1), DURATION); }
+      function start() {
+        clearInterval(autoTimer);
+        if (!userPaused && !document.hidden) {
+          autoTimer = setInterval(() => activate(current + 1), DURATION);
+          progress();
+        }
+      }
+      function renderPauseState() {
+        toggle.setAttribute('aria-pressed', String(userPaused));
+        toggle.setAttribute('aria-label', userPaused ? 'Reproducir carrusel' : 'Pausar carrusel');
+        toggle.innerHTML = userPaused ? '<i class="bi bi-play-fill"></i>' : '<i class="bi bi-pause-fill"></i>';
+      }
       slider.querySelector('.slider-prev').onclick = () => { activate(current - 1); start(); };
       slider.querySelector('.slider-next').onclick = () => { activate(current + 1); start(); };
       dots.forEach(dot => dot.onclick = () => { activate(Number(dot.dataset.dot)); start(); });
-      start(); progress();
+      toggle.onclick = () => {
+        userPaused = !userPaused;
+        renderPauseState();
+        start();
+      };
+      document.addEventListener('visibilitychange', start);
+      slides.forEach((slide, index) => slide.setAttribute('aria-hidden', String(index !== current)));
+      renderPauseState();
+      start();
     })();
   </script>
 </body>

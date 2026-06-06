@@ -15,6 +15,7 @@ $RECYCLE.BIN/
 # Node (por si en el futuro se usa)
 node_modules/
 npm-debug.log*
+dist/
 
 # Temporales
 *.tmp
