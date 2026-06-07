@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://core-tec.cl/</loc></url>
-  <url><loc>https://core-tec.cl/servicios.html</loc></url>
-  <url><loc>https://core-tec.cl/galeria.html</loc></url>
-  <url><loc>https://core-tec.cl/somos.html</loc></url>
-  <url><loc>https://core-tec.cl/certificaciones.html</loc></url>
-  <url><loc>https://core-tec.cl/contacto.html</loc></url>
+  <url><loc>https://core-tec.cl/</loc><lastmod>2026-06-07</lastmod></url>
+  <url><loc>https://core-tec.cl/servicios.html</loc><lastmod>2026-06-07</lastmod></url>
+  <url><loc>https://core-tec.cl/galeria.html</loc><lastmod>2026-06-07</lastmod></url>
+  <url><loc>https://core-tec.cl/somos.html</loc><lastmod>2026-06-07</lastmod></url>
+  <url><loc>https://core-tec.cl/certificaciones.html</loc><lastmod>2026-06-07</lastmod></url>
+  <url><loc>https://core-tec.cl/contacto.html</loc><lastmod>2026-06-07</lastmod></url>
 </urlset>

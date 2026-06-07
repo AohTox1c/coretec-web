@@ -17,8 +17,11 @@ const files = [
   '_redirects',
   'robots.txt',
   'sitemap.xml',
+  'favicon.ico',
+  'favicon-48.png',
+  'apple-touch-icon.png',
 ];
-const directories = ['css', 'js'];
+const directories = ['css', 'js', 'functions'];
 
 fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
