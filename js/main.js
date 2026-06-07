@@ -9,6 +9,99 @@ document.addEventListener('DOMContentLoaded', () => {
     formNext.value = `${window.location.origin}/gracias.html`;
   }
 
+  /* ── Contact form submission ── */
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    const submitButton = contactForm.querySelector('.form-submit');
+    const formStatus = document.getElementById('formStatus');
+    const defaultButtonContent = submitButton?.innerHTML || 'Enviar solicitud';
+    let isSubmitting = false;
+
+    const setSubmitting = (submitting) => {
+      isSubmitting = submitting;
+      if (!submitButton) return;
+
+      submitButton.disabled = submitting;
+      submitButton.classList.toggle('loading', submitting);
+      submitButton.setAttribute('aria-disabled', String(submitting));
+      submitButton.innerHTML = submitting
+        ? '<span class="form-spinner" aria-hidden="true"></span> Enviando...'
+        : defaultButtonContent;
+    };
+
+    const showFormError = (message) => {
+      if (!formStatus) return;
+      formStatus.textContent = message;
+      formStatus.hidden = false;
+      formStatus.classList.add('visible');
+      formStatus.focus();
+    };
+
+    const clearFormError = () => {
+      if (!formStatus) return;
+      formStatus.textContent = '';
+      formStatus.hidden = true;
+      formStatus.classList.remove('visible');
+    };
+
+    contactForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (isSubmitting) return;
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        return;
+      }
+
+      clearFormError();
+      setSubmitting(true);
+
+      try {
+        const formData = new FormData(contactForm);
+        const payload = Object.fromEntries(formData.entries());
+        const endpoint = contactForm.action.replace(
+          'https://formsubmit.co/',
+          'https://formsubmit.co/ajax/',
+        );
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json().catch(() => null);
+        const rejected = result?.success === false || result?.success === 'false';
+
+        if (!response.ok || rejected) {
+          throw new Error('FormSubmit rejected the request');
+        }
+
+        contactForm.reset();
+        if (submitButton) {
+          submitButton.classList.remove('loading');
+          submitButton.innerHTML = '<i class="bi bi-check-lg"></i> Solicitud enviada';
+        }
+
+        window.location.assign(
+          formNext?.value || `${window.location.origin}/gracias.html`,
+        );
+      } catch (error) {
+        setSubmitting(false);
+        showFormError(
+          'No pudimos enviar la solicitud. Revisa tu conexión e inténtalo nuevamente. Tus datos siguen en el formulario.',
+        );
+      }
+    });
+
+    window.addEventListener('pageshow', () => {
+      setSubmitting(false);
+      clearFormError();
+    });
+  }
+
   /* ── Hamburger / Mobile Menu ── */
   const hamburger = document.querySelector('.hamburger');
   const mobileMenu = document.querySelector('.mobile-menu');

@@ -1857,7 +1857,35 @@ select.form-input option {
   font-size: 0.92rem;
   transition: all 0.3s ease;
 }
-.form-submit.loading { opacity: 0.7; pointer-events: none; }
+.form-submit.loading,
+.form-submit:disabled {
+  opacity: 0.72;
+  cursor: wait;
+  pointer-events: none;
+}
+.form-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(5, 5, 5, 0.35);
+  border-top-color: var(--color-bg);
+  border-radius: 50%;
+  animation: form-spin 0.7s linear infinite;
+}
+@keyframes form-spin {
+  to { transform: rotate(360deg); }
+}
+.form-status {
+  margin: 4px 0 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(231, 76, 60, 0.55);
+  border-radius: 8px;
+  background: rgba(231, 76, 60, 0.1);
+  color: #ffb4ac;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.form-status[hidden] { display: none; }
+.form-status.visible { display: block; }
 
 /* Success state */
 .form-success {

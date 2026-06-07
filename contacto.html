@@ -36,7 +36,7 @@
     <div class="contact-form-panel" data-animate><div class="contact-form-card"><div class="contact-form-header"><h3>Solicitar información o cotización</h3><p>Describe brevemente el servicio, activo, ubicación y alcance requerido.</p></div>
       <form class="contact-form" id="contactForm" action="https://formsubmit.co/contacto@core-tec.cl" method="POST">
         <input type="hidden" name="_subject" value="Nueva solicitud web Core Tec" />
-        <input type="hidden" name="_next" value="/gracias.html" />
+        <input type="hidden" name="_next" value="https://core-tec.cl/gracias.html" />
         <input type="hidden" name="_template" value="table" />
         <input type="hidden" name="_captcha" value="false" />
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
@@ -44,6 +44,7 @@
         <div class="form-row"><div class="form-group"><label class="form-label" for="empresa"><i class="bi bi-building"></i> Empresa</label><input type="text" id="empresa" name="empresa" class="form-input" autocomplete="organization" /></div><div class="form-group"><label class="form-label" for="telefono"><i class="bi bi-telephone"></i> Número de contacto <span class="required">*</span></label><input type="tel" id="telefono" name="telefono" class="form-input" autocomplete="tel" required /></div></div>
           <div class="form-group"><label class="form-label" for="servicio"><i class="bi bi-gear"></i> Servicio de interés</label><select id="servicio" name="servicio" class="form-input"><option value="">Selecciona una opción</option><option>Reparación de palas eólicas</option><option>Inspección de palas o aerogeneradores</option><option>Mantenimiento eólico</option><option>Inspección y certificación de polipastos</option><option>Rope Access y trabajos en altura</option><option>Soporte técnico especializado</option><option>Otro requerimiento</option></select></div>
         <div class="form-group"><label class="form-label" for="mensaje"><i class="bi bi-chat-text"></i> Mensaje <span class="required">*</span></label><textarea id="mensaje" name="mensaje" class="form-textarea" rows="6" placeholder="Describe el proyecto, ubicación, activo y alcance requerido." required></textarea></div>
+        <div class="form-status" id="formStatus" role="alert" aria-live="assertive" hidden></div>
         <div class="form-footer"><p class="form-note"><span class="required">*</span> Campos obligatorios</p><button type="submit" class="btn btn-primary form-submit"><i class="bi bi-send"></i> Enviar solicitud</button></div>
       </form>
     </div></div>
