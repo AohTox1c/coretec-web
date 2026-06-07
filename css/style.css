@@ -1488,6 +1488,14 @@ p  { color: var(--color-text-muted); font-size: 0.975rem; }
   gap: 12px;
 }
 .footer-bottom p { font-size: 0.8rem; }
+.site-version {
+  color: var(--color-text-muted);
+  font-family: monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  opacity: 0.42;
+  user-select: text;
+}
 .footer-bottom-links {
   display: flex;
   gap: 20px;
