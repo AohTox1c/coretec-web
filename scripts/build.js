@@ -134,6 +134,16 @@ for (const file of files.filter((name) => name.endsWith('.html'))) {
     return optimized;
   });
 
+  html = html
+    .replace(
+      /href="css\/style\.css(?:\?v=[^"]*)?"/g,
+      `href="css/style.css?v=${siteVersion.commit}"`,
+    )
+    .replace(
+      /src="js\/main\.js(?:\?v=[^"]*)?"/g,
+      `src="js/main.js?v=${siteVersion.commit}"`,
+    );
+
   if (file === 'index.html') {
     html = html.replace(
       /<span class="site-version"[^>]*>[^<]*<\/span>/,
