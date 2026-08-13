@@ -44,7 +44,20 @@
       <div class="gallery-item" id="mantenimiento" role="button" tabindex="0" data-category="mantenimiento" data-src="img/corporativo/mantenimiento-aerogenerador.webp" title="Mantenimiento interior"><img src="img/corporativo/mantenimiento-aerogenerador.webp" alt="Mantenimiento interior de aerogenerador" /><div class="gallery-overlay"><span class="gallery-overlay-text">Mantenimiento de aerogenerador</span></div></div>
     </div>
   </div></section>
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada" aria-hidden="true"><button type="button" class="lightbox-close" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button><img class="lightbox-img" id="lightbox-img" src="" alt="Imagen ampliada" /></div>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" aria-hidden="true">
+    <button type="button" class="lightbox-close" aria-label="Cerrar visor"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+    <button type="button" class="lightbox-nav lightbox-prev" aria-label="Imagen anterior"><i class="bi bi-chevron-left" aria-hidden="true"></i></button>
+    <figure class="lightbox-stage">
+      <div class="lightbox-media">
+        <img class="lightbox-img" id="lightbox-img" src="" alt="Imagen ampliada" draggable="false" />
+      </div>
+      <figcaption class="lightbox-meta" id="lightbox-caption" aria-live="polite">
+        <span class="lightbox-title" id="lightbox-title"></span>
+        <span class="lightbox-counter" id="lightbox-counter"></span>
+      </figcaption>
+    </figure>
+    <button type="button" class="lightbox-nav lightbox-next" aria-label="Imagen siguiente"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+  </div>
 
   <section class="cta-section"><div class="container"><div class="cta-inner"><div class="cta-text"><h2>¿Necesitas una intervención <span class="accent">técnica</span>?</h2><p>Cuéntanos las condiciones de tu proyecto.</p></div><div class="cta-actions"><a href="contacto.html" class="btn btn-primary">Solicitar cotización</a><a href="servicios.html" class="btn btn-ghost">Ver soluciones</a></div></div></div></section>
 

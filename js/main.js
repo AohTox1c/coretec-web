@@ -202,24 +202,82 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxClose = document.querySelector('.lightbox-close');
+  const lightboxPrev = document.querySelector('.lightbox-prev');
+  const lightboxNext = document.querySelector('.lightbox-next');
+  const lightboxMedia = document.querySelector('.lightbox-media');
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxCounter = document.getElementById('lightbox-counter');
+  const galleryItems = Array.from(document.querySelectorAll('.gallery-item[data-src]'));
   let lastLightboxTrigger = null;
+  let currentLightboxIndex = 0;
+  let lightboxTransitionTimer = null;
+  let swipeStartX = null;
+  let swipeStartY = null;
+  let swipePointerId = null;
 
-  if (lightbox) {
+  if (lightbox && lightboxImg && galleryItems.length) {
+    function normalizeLightboxIndex(index) {
+      return (index + galleryItems.length) % galleryItems.length;
+    }
+
+    function preloadLightboxNeighbors() {
+      [-1, 1].forEach(offset => {
+        const item = galleryItems[normalizeLightboxIndex(currentLightboxIndex + offset)];
+        const src = item?.dataset.src;
+        if (src) {
+          const preload = new Image();
+          preload.src = src;
+        }
+      });
+    }
+
+    function renderLightboxItem(index, animate = true) {
+      currentLightboxIndex = normalizeLightboxIndex(index);
+      const item = galleryItems[currentLightboxIndex];
+      const src = item.dataset.src;
+      const itemImg = item.querySelector('img');
+      const title = item.title || itemImg?.alt || 'Imagen ampliada';
+
+      const applyImage = () => {
+        lightboxImg.src = src;
+        lightboxImg.alt = itemImg?.alt || title;
+        lightboxTitle.textContent = title;
+        lightboxCounter.textContent = `${currentLightboxIndex + 1} de ${galleryItems.length}`;
+        preloadLightboxNeighbors();
+
+        if (lightboxImg.complete) {
+          requestAnimationFrame(() => lightboxImg.classList.remove('is-changing'));
+        }
+      };
+
+      window.clearTimeout(lightboxTransitionTimer);
+      if (animate && lightbox.classList.contains('active')) {
+        lightboxImg.classList.add('is-changing');
+        lightboxTransitionTimer = window.setTimeout(applyImage, 110);
+      } else {
+        lightboxImg.classList.remove('is-changing');
+        applyImage();
+      }
+    }
+
+    function navigateLightbox(offset) {
+      if (!lightbox.classList.contains('active')) return;
+      renderLightboxItem(currentLightboxIndex + offset);
+    }
+
     function openLightbox(item) {
-      const src = item?.dataset.src;
-      if (!src) return;
+      const index = galleryItems.indexOf(item);
+      if (index < 0) return;
 
       lastLightboxTrigger = item;
-      const itemImg = item.querySelector('img');
-      lightboxImg.src = src;
-      lightboxImg.alt = itemImg?.alt || item.title || 'Imagen ampliada';
+      renderLightboxItem(index, false);
       lightbox.classList.add('active');
       lightbox.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
       lightboxClose?.focus();
     }
 
-    document.querySelectorAll('.gallery-item[data-src]').forEach(item => {
+    galleryItems.forEach(item => {
       item.addEventListener('click', () => openLightbox(item));
       item.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' || event.key === ' ') {
@@ -234,17 +292,66 @@ document.addEventListener('DOMContentLoaded', () => {
       lightbox.classList.remove('active');
       lightbox.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      window.clearTimeout(lightboxTransitionTimer);
       lightboxImg.src = '';
       lightboxImg.alt = 'Imagen ampliada';
+      lightboxImg.classList.remove('is-changing');
+      lightboxTitle.textContent = '';
+      lightboxCounter.textContent = '';
       lastLightboxTrigger?.focus();
     }
 
+    lightboxImg.addEventListener('load', () => {
+      requestAnimationFrame(() => lightboxImg.classList.remove('is-changing'));
+    });
+    lightboxImg.addEventListener('error', () => lightboxImg.classList.remove('is-changing'));
     lightboxClose?.addEventListener('click', closeLightbox);
+    lightboxPrev?.addEventListener('click', () => navigateLightbox(-1));
+    lightboxNext?.addEventListener('click', () => navigateLightbox(1));
     lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox) closeLightbox();
     });
+
+    lightboxMedia?.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      swipeStartX = event.clientX;
+      swipeStartY = event.clientY;
+      swipePointerId = event.pointerId;
+      lightboxMedia.setPointerCapture?.(event.pointerId);
+    });
+
+    lightboxMedia?.addEventListener('pointerup', event => {
+      if (swipePointerId !== event.pointerId || swipeStartX === null || swipeStartY === null) return;
+
+      const deltaX = event.clientX - swipeStartX;
+      const deltaY = event.clientY - swipeStartY;
+      swipeStartX = null;
+      swipeStartY = null;
+      swipePointerId = null;
+
+      if (Math.abs(deltaX) >= 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+        navigateLightbox(deltaX < 0 ? 1 : -1);
+      }
+    });
+
+    lightboxMedia?.addEventListener('pointercancel', () => {
+      swipeStartX = null;
+      swipeStartY = null;
+      swipePointerId = null;
+    });
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
+      if (!lightbox.classList.contains('active')) return;
+
+      if (e.key === 'Escape') {
+        closeLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigateLightbox(-1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateLightbox(1);
+      }
     });
 
     const selectedId = decodeURIComponent(window.location.hash.slice(1));
