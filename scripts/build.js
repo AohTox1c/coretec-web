@@ -36,13 +36,11 @@ for (const directory of directories) {
   });
 }
 
-fs.mkdirSync(path.join(output, 'img', 'corporativo'), { recursive: true });
-for (const file of fs.readdirSync(path.join(root, 'img', 'corporativo'))) {
-  fs.copyFileSync(
-    path.join(root, 'img', 'corporativo', file),
-    path.join(output, 'img', 'corporativo', file),
-  );
-}
+fs.cpSync(
+  path.join(root, 'img', 'corporativo'),
+  path.join(output, 'img', 'corporativo'),
+  { recursive: true },
+);
 
 for (const file of ['CORETEC LOGO.png', 'CORETEC FAVICON.png']) {
   fs.copyFileSync(path.join(root, 'img', file), path.join(output, 'img', file));
@@ -57,6 +55,13 @@ const imageDimensions = {
   'img/corporativo/reparacion-pala.webp': [1536, 1024],
   'img/corporativo/rope-access-vertical.webp': [676, 1014],
   'img/corporativo/trabajo-en-altura.webp': [1536, 1024],
+  'img/corporativo/real/coretec-foto-01-trabajo-altura-aereo-01.webp': [1280, 720],
+  'img/corporativo/real/coretec-foto-02-trabajo-altura-aereo-02.webp': [1280, 720],
+  'img/corporativo/real/coretec-foto-03-trabajo-vertical-panoramica.webp': [1280, 960],
+  'img/corporativo/real/coretec-foto-04-detalle-pala-cuerdas.webp': [960, 1280],
+  'img/corporativo/real/coretec-foto-05-tecnico-rigging.webp': [960, 1280],
+  'img/corporativo/real/coretec-foto-06-reparacion-pala-tecnico.webp': [960, 1280],
+  'img/corporativo/real/coretec-foto-07-reparacion-interior-pala.webp': [1600, 1206],
 };
 
 function getSiteVersion() {
