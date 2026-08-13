@@ -63,6 +63,7 @@ const imageDimensions = {
   'img/corporativo/real/coretec-foto-06-reparacion-pala-tecnico.webp': [960, 1280],
   'img/corporativo/real/coretec-foto-07-reparacion-interior-pala.webp': [1600, 1206],
   'img/corporativo/real/coretec-foto-08-tecnico-sobre-pala-aerea.webp': [1664, 928],
+  'img/corporativo/real/coretec-foto-08-tecnico-sobre-pala-aerea-hd-preservado.webp': [1920, 1072],
 };
 
 function getSiteVersion() {
