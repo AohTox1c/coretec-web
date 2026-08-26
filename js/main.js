@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const item = galleryItems[currentLightboxIndex];
       const src = item.dataset.src;
       const itemImg = item.querySelector('img');
-      const title = item.title || itemImg?.alt || 'Imagen ampliada';
+      const title = item.dataset.title || itemImg?.alt || 'Imagen ampliada';
 
       const applyImage = () => {
         lightboxImg.src = src;
