@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#050505" />
-  <link rel="preload" as="image" href="img/corporativo/trabajo-en-altura.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="img/corporativo/video/coretec-video-01-recorrido-aerogenerador.webp" fetchpriority="high" />
   <title>CORE-TEC | Soluciones técnicas para la industria eólica</title>
   <meta name="description" content="CORE-TEC ofrece reparación e inspección de palas eólicas, mantenimiento de aerogeneradores, Rope Access y suministro de materiales compuestos." />
   <link rel="canonical" href="https://core-tec.cl/" />
@@ -100,7 +100,9 @@
 
   <section class="hero-slider" id="heroSlider">
     <div class="slide active" data-slide="0">
-      <div class="slide-bg slide-bg--trabajo-altura" style="background-image:url('img/corporativo/trabajo-en-altura.webp');"></div>
+      <video class="slide-bg slide-video slide-video--hero" data-auto-video data-hero-video autoplay muted loop playsinline preload="metadata" poster="img/corporativo/video/coretec-video-01-recorrido-aerogenerador.webp" aria-hidden="true">
+        <source src="video/corporativo/coretec-hero-drone-montaje.mp4" type="video/mp4" />
+      </video>
       <div class="slide-overlay"></div>
       <div class="slide-pattern"></div>
       <div class="container slide-content">
@@ -149,7 +151,7 @@
         <button type="button" class="dot" data-dot="1" aria-label="Slide 2" aria-current="false"></button>
         <button type="button" class="dot" data-dot="2" aria-label="Slide 3" aria-current="false"></button>
       </div>
-      <button type="button" class="slider-toggle" id="sliderToggle" aria-label="Pausar carrusel" aria-pressed="false"><i class="bi bi-pause-fill"></i></button>
+      <button type="button" class="slider-toggle" id="sliderToggle" data-video-toggle aria-label="Pausar video" aria-pressed="false"><i class="bi bi-pause-fill" aria-hidden="true"></i></button>
       <div class="slider-counter"><span id="slideNum">01</span> / 03</div>
     </div>
     <div class="slider-progress"><div class="slider-progress-bar" id="sliderProgress"></div></div>

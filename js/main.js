@@ -198,6 +198,144 @@ document.addEventListener('DOMContentLoaded', () => {
     counters.forEach(el => counterObserver.observe(el));
   }
 
+  /* ── Autoplay video lifecycle ── */
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const saveDataEnabled = Boolean(navigator.connection?.saveData);
+  const autoVideos = Array.from(document.querySelectorAll('video[data-auto-video]'));
+  const autoVideoState = new WeakMap();
+
+  function getVideoToggle(video) {
+    if (video.matches('[data-hero-video]')) return document.getElementById('sliderToggle');
+    return video.closest('.video-card')?.querySelector('[data-video-toggle]') || null;
+  }
+
+  function updateVideoToggle(video) {
+    const toggle = getVideoToggle(video);
+    if (!toggle) return;
+
+    const isPaused = video.paused;
+    toggle.setAttribute('aria-label', isPaused ? 'Reproducir video' : 'Pausar video');
+    toggle.setAttribute('aria-pressed', String(isPaused));
+    const icon = toggle.querySelector('i');
+    if (icon) icon.className = isPaused ? 'bi bi-play-fill' : 'bi bi-pause-fill';
+  }
+
+  function syncAutoVideo(video) {
+    const state = autoVideoState.get(video);
+    if (!state) return;
+
+    const modalOpen = document.getElementById('videoLightbox')?.classList.contains('active');
+    const mayAutoplay = !reducedMotion.matches && !saveDataEnabled;
+    const shouldPlay = mayAutoplay && state.visible && !state.userPaused && !document.hidden && !modalOpen;
+
+    if (shouldPlay) {
+      video.play().then(() => updateVideoToggle(video)).catch(() => updateVideoToggle(video));
+    } else {
+      video.pause();
+      updateVideoToggle(video);
+    }
+  }
+
+  if (autoVideos.length) {
+    const autoVideoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const state = autoVideoState.get(entry.target);
+        if (!state) return;
+        state.visible = entry.isIntersecting;
+        syncAutoVideo(entry.target);
+      });
+    }, { threshold: 0.38 });
+
+    autoVideos.forEach(video => {
+      autoVideoState.set(video, { visible: false, userPaused: false });
+      if (reducedMotion.matches || saveDataEnabled) {
+        video.removeAttribute('autoplay');
+        video.pause();
+      }
+
+      const toggle = getVideoToggle(video);
+      toggle?.addEventListener('click', () => {
+        const state = autoVideoState.get(video);
+        if (!state) return;
+
+        if (video.paused) {
+          state.userPaused = false;
+          video.play().then(() => updateVideoToggle(video)).catch(() => updateVideoToggle(video));
+        } else {
+          state.userPaused = true;
+          video.pause();
+          updateVideoToggle(video);
+        }
+      });
+
+      video.addEventListener('play', () => updateVideoToggle(video));
+      video.addEventListener('pause', () => updateVideoToggle(video));
+      autoVideoObserver.observe(video);
+      updateVideoToggle(video);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      autoVideos.forEach(syncAutoVideo);
+    });
+
+    reducedMotion.addEventListener?.('change', () => {
+      autoVideos.forEach(syncAutoVideo);
+    });
+  }
+
+  /* ── Portfolio video viewer ── */
+  const videoLightbox = document.getElementById('videoLightbox');
+  const videoLightboxPlayer = document.getElementById('videoLightboxPlayer');
+  const videoLightboxTitle = document.getElementById('videoLightboxTitle');
+  const videoLightboxClose = document.querySelector('.video-lightbox-close');
+  const videoOpenButtons = Array.from(document.querySelectorAll('[data-video-open]'));
+  let lastVideoTrigger = null;
+
+  if (videoLightbox && videoLightboxPlayer && videoOpenButtons.length) {
+    function openVideoLightbox(trigger) {
+      const src = trigger.dataset.videoSrc;
+      if (!src) return;
+
+      lastVideoTrigger = trigger;
+      autoVideos.forEach(video => video.pause());
+      videoLightboxPlayer.src = src;
+      videoLightboxTitle.textContent = trigger.dataset.videoTitle || 'Operación en terreno';
+      videoLightbox.classList.add('active');
+      videoLightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      videoLightboxPlayer.load();
+      videoLightboxPlayer.play().catch(() => {});
+      videoLightboxClose?.focus();
+    }
+
+    function closeVideoLightbox() {
+      if (!videoLightbox.classList.contains('active')) return;
+
+      videoLightboxPlayer.pause();
+      videoLightboxPlayer.removeAttribute('src');
+      videoLightboxPlayer.load();
+      videoLightbox.classList.remove('active');
+      videoLightbox.setAttribute('aria-hidden', 'true');
+      videoLightboxTitle.textContent = '';
+      document.body.style.overflow = '';
+      autoVideos.forEach(syncAutoVideo);
+      lastVideoTrigger?.focus();
+    }
+
+    videoOpenButtons.forEach(button => {
+      button.addEventListener('click', () => openVideoLightbox(button));
+    });
+    videoLightboxClose?.addEventListener('click', closeVideoLightbox);
+    videoLightbox.addEventListener('click', event => {
+      if (event.target === videoLightbox) closeVideoLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && videoLightbox.classList.contains('active')) {
+        closeVideoLightbox();
+      }
+    });
+  }
+
   /* ── Gallery Lightbox ── */
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');

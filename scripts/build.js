@@ -21,7 +21,7 @@ const files = [
   'favicon-48.png',
   'apple-touch-icon.png',
 ];
-const directories = ['css', 'js', 'functions'];
+const directories = ['css', 'js', 'functions', 'video'];
 
 fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
