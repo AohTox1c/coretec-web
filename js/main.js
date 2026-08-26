@@ -14,8 +14,22 @@ document.addEventListener('DOMContentLoaded', () => {
   if (contactForm) {
     const submitButton = contactForm.querySelector('.form-submit');
     const formStatus = document.getElementById('formStatus');
+    const requestTopic = new URLSearchParams(window.location.search).get('tema');
+    const serviceSelect = contactForm.querySelector('#servicio');
+    const messageField = contactForm.querySelector('#mensaje');
+    const subjectField = contactForm.querySelector('input[name="_subject"]');
     const defaultButtonContent = submitButton?.innerHTML || 'Enviar solicitud';
     let isSubmitting = false;
+
+    if (requestTopic === 'certificaciones') {
+      if (serviceSelect) serviceSelect.value = 'Antecedentes y certificaciones';
+      if (subjectField) {
+        subjectField.value = 'Solicitud de antecedentes y certificaciones - CORE-TEC';
+      }
+      if (messageField && !messageField.value) {
+        messageField.placeholder = 'Indica el servicio o proyecto, la empresa solicitante y los antecedentes o certificaciones que necesitas.';
+      }
+    }
 
     const setSubmitting = (submitting) => {
       isSubmitting = submitting;
